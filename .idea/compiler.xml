@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <annotationProcessing>
+      <profile name="Maven default annotation processors profile" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <module name="springmvc" />
+        <module name="springmvc2" />
+        <module name="task2_springmvc" />
+        <module name="task2_springmvc2" />
+        <module name="task2_ssm" />
+        <module name="task2_ssm2" />
+        <module name="task2_ssm3" />
+      </profile>
+    </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="springmvc" target="1.8" />
+      <module name="springmvc2" target="1.5" />
+      <module name="task2_springmvc" target="1.8" />
+      <module name="task2_springmvc2" target="1.8" />
+      <module name="task2_ssm" target="1.8" />
+      <module name="task2_ssm2" target="1.8" />
+      <module name="task2_ssm3" target="1.8" />
+    </bytecodeTargetLevel>
+  </component>
+</project>

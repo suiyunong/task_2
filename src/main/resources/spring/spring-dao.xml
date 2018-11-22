@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:jee="http://www.springframework.org/schema/jee"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+    http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
+    http://www.springframework.org/schema/context
+    http://www.springframework.org/schema/context/spring-context-3.2.xsd http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee.xsd">
+    <!-- 加载数据库配置文件 -->
+    <context:property-placeholder location="classpath:db.properties"/>
+    <!--<context:property-placeholder location="classpath:db.properties" ignore-unresolvable="true"/>-->
+    <!--!该 BeanPostProcessor 将自动对标注@Autowired 的 Bean 进行注入 &ndash;&gt;-->
+    <bean class="org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor"/>
+
+    <!-- 配置数据源 -->
+    <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+       <property name="driverClassName" value="${jdbc.driver}"/>
+        <property name="url" value="${jdbc.url}"/>
+        <property name="username" value="${jdbc.user}"/>
+        <property name="password" value="${jdbc.password}"/>
+    </bean>
+
+    <!--配置sqlSessionFactory -->
+    <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <!--注入数据库链接 -->
+        <property name="dataSource" ref="dataSource"/>
+        <!--扫描包 配置别名 -->
+        <property name="typeAliasesPackage" value="cn.syn.springmvc" />
+        <!--扫描包配置sqlmapper文件 -->
+        <property name="mapperLocations" value="classpath:mapper/*.xml" />
+    </bean>
+
+    <!--配置动态实现dao接口注入spring -->
+    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+        <!--注入sqlSessionFactory -->
+        <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory" />
+        <!--basePackage指定要扫描的包，在此包之下的映射器都会被 搜索到。可指定多个包，包与包之间用逗号或分号分隔 -->
+        <property name="basePackage" value="cn.syn.springmvc.dao" />
+    </bean>
+
+    <!-- mapper配置
+            MapperFactoryBean:根据mapper接口生成代理对象
+        -->
+    <!--<bean id="peopleMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">-->
+        <!--<property name="mapperInterface" value="cn.syn.springmvc.dao.UserMapper</property>-->
+        <!--<property name="sqlSessionFactory" ref="sqlSessionFactory"></property>-->
+        <!--</bean>-->
+    <!--<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">-->
+        <!--<property name="basePackage" value="cn.syn.springmvc"/>-->
+        <!--<property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"/>-->
+    <!--</bean>-->
+    <!--<bean id="annotationPeopleMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">-->
+        <!--<property name="mapperInterface" value="com.syn.spring_mybatis.mapper.AnnotationPeopleMapper"></property>-->
+        <!--<property name="sqlSessionFactory" ref="sqlSessionFactory"></property>-->
+    <!--</bean>-->
+
+
+    <!--&lt;!&ndash; 开启注解&ndash;&gt;-->
+    <!--<context:annotation-config/>-->
+
+    <!--&lt;!&ndash;开启组件自动扫描,扫描路径由base-package属性指定，表示Spring将会扫描该目录以及子目录下所有被-->
+     <!--@Repository、@Service 和 @Controller 和 @Component四个注解修饰的类，对它们进行装配&ndash;&gt;-->
+    <!--<context:component-scan base-package="cn.syn.springmvc.service.impl"/>-->
+
+    <!--&lt;!&ndash;配置数据源&ndash;&gt;-->
+    <!--<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">-->
+        <!--<property name="driverClassName" value="${driver}"/>-->
+        <!--<property name="url" value="${url}"/>-->
+        <!--<property name="username" value="${user}"/>-->
+        <!--<property name="password" value="${password}"/>-->
+        <!--<property name="maxActive" value="20"/>-->
+        <!--<property name="maxWait" value="180"/>-->
+        <!--<property name="maxIdle" value="5"/>-->
+    <!--</bean>-->
+
+    <!--创建sqlSessionFactory工厂-->
+    <!--<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">-->
+        <!--<property name="dataSource" ref="dataSource"/>-->
+        <!--&lt;!&ndash;指定mybatis全局配置文件的位置&ndash;&gt;-->
+        <!--<property name="configLocation" value="classpath:mybatis-config.xml"/>-->
+        <!--&lt;!&ndash;指定mapper映射文件的位置&ndash;&gt;-->
+        <!--<property name="mapperLocations" value="classpath:mapper/*.xml"/>-->
+    <!--</bean>-->
+
+    <!-- Mapper 扫描器配置mybatis的代理接口开发 * 接口类名和映射文件必须同名 * 接口类和映射文件必须在同一个目录下
+     * 接口的映射文件的namespace名称必须是接口的全限定名
+        * 接口的方法名必须和映射的statement的id一致 -->
+    <!--<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">-->
+        <!--<property name="basePackage" value="cn.syn.springmvc.dao"/>-->
+        <!--<property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"/>-->
+    <!--</bean>-->
+
+
+</beans>
